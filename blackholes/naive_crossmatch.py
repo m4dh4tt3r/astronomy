@@ -2,15 +2,18 @@
 
 import numpy as np
 
+# Convert Hours, minutes, seconds to decimal degrees
 def hms2dec(hour, min, sec):
   return 15*(hour + min/60 + sec/(60*60))
 
+# Convert degrees, minutes, seconds to decimal degrees
 def dms2dec(deg, min, sec):
   if deg >= 0:
     return deg + min/60 + sec/(60*60)
   else:
     return -1*(-deg + min/60 + sec/(60*60))
 
+# Caluclate angular distance
 def angular_dist(ra1, dec1, ra2, dec2):
     ra1_rad = np.radians(ra1)
     ra2_rad = np.radians(ra2)
@@ -39,6 +42,7 @@ def import_super(filename):
     catFormat.append(tmp)
   return catFormat
 
+# Find closest object by angular distance in a provided catalog given right ascension and declintion
 def find_closest(catalog, ra, dec):
   dist = angular_dist(ra, dec, catalog[0][1], catalog[0][2])
   id = catalog[0][0]
@@ -50,6 +54,7 @@ def find_closest(catalog, ra, dec):
   
   return (id, dist)
 
+# Naive crossmatch implementation
 def crossmatch(bss, super, max_dist):
   matches = []
   no_matches = []
@@ -67,7 +72,8 @@ def crossmatch(bss, super, max_dist):
       matches.append((id1, closest_id2, closest_dist))
     
   return matches, no_matches
-  
+
+# Test functions
 if __name__ == '__main__':
   print(hms2dec(23, 12, 6))
   print(dms2dec(22, 57, 18))
